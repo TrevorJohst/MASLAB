@@ -1,0 +1,4 @@
+[console_scripts]
+kbd_driver = robot.kbd_driver:main
+robot = robot.robot:main
+

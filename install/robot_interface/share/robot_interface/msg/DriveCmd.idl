@@ -1,0 +1,14 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from robot_interface/msg/DriveCmd.msg
+// generated code does not contain a copyright notice
+
+
+module robot_interface {
+  module msg {
+    struct DriveCmd {
+      float l_speed;
+
+      float r_speed;
+    };
+  };
+};

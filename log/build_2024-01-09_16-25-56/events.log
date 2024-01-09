@@ -1,0 +1,198 @@
+[0.000000] (-) TimerEvent: {}
+[0.000119] (robot_interface) JobQueued: {'identifier': 'robot_interface', 'dependencies': OrderedDict()}
+[0.000157] (robot) JobQueued: {'identifier': 'robot', 'dependencies': OrderedDict([('robot_interface', '/home/team-2/robot_ws/install/robot_interface')])}
+[0.000204] (robot_interface) JobStarted: {'identifier': 'robot_interface'}
+[0.057769] (robot_interface) JobProgress: {'identifier': 'robot_interface', 'progress': 'cmake'}
+[0.058624] (robot_interface) JobProgress: {'identifier': 'robot_interface', 'progress': 'build'}
+[0.059396] (robot_interface) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/team-2/robot_ws/build/robot_interface', '--', '-j4', '-l4'], 'cwd': '/home/team-2/robot_ws/build/robot_interface', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'team-2'), ('SSH_CLIENT', '18.25.30.160 62080 22'), ('XDG_SESSION_TYPE', 'tty'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('MOTD_SHOWN', 'pam'), ('HOME', '/home/team-2'), ('OLDPWD', '/home/team-2'), ('SSH_TTY', '/dev/pts/0'), ('ROS_PYTHON_VERSION', '3'), ('ROS_IP', '18.25.31.142'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'team-2'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('TERM', 'xterm-256color'), ('XDG_SESSION_ID', '2'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/home/team-2/.local/bin:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', 'localhost:10.0'), ('LANG', 'en_US.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('SHELL', '/bin/bash'), ('ROS_MASTER_URI', 'http://18.25.31.142:11311'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('PWD', '/home/team-2/robot_ws/build/robot_interface'), ('SSH_CONNECTION', '18.25.30.160 62080 18.25.31.142 22'), ('XDG_DATA_DIRS', '/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[0.099338] (-) TimerEvent: {}
+[0.137341] (robot_interface) StdoutLine: {'line': b'[  3%] Built target robot_interface__cpp\n'}
+[0.139078] (robot_interface) StdoutLine: {'line': b'[ 12%] Built target robot_interface__rosidl_generator_c\n'}
+[0.149526] (robot_interface) StdoutLine: {'line': b'[ 12%] Built target ament_cmake_python_copy_robot_interface\n'}
+[0.172369] (robot_interface) StdoutLine: {'line': b'[ 35%] Built target robot_interface__rosidl_typesupport_fastrtps_cpp\n'}
+[0.172636] (robot_interface) StdoutLine: {'line': b'[ 41%] Built target robot_interface__rosidl_typesupport_cpp\n'}
+[0.172870] (robot_interface) StdoutLine: {'line': b'[ 35%] Built target robot_interface__rosidl_typesupport_introspection_cpp\n'}
+[0.182399] (robot_interface) StdoutLine: {'line': b'[ 51%] Built target robot_interface__rosidl_typesupport_fastrtps_c\n'}
+[0.199437] (-) TimerEvent: {}
+[0.201413] (robot_interface) StdoutLine: {'line': b'[ 70%] Built target robot_interface__rosidl_typesupport_introspection_c\n'}
+[0.201625] (robot_interface) StdoutLine: {'line': b'[ 70%] Built target robot_interface__rosidl_typesupport_c\n'}
+[0.221300] (robot_interface) StdoutLine: {'line': b'[ 70%] Built target robot_interface\n'}
+[0.242399] (robot_interface) StdoutLine: {'line': b'[ 74%] Built target robot_interface__py\n'}
+[0.266335] (robot_interface) StdoutLine: {'line': b'[ 80%] Built target robot_interface__rosidl_generator_py\n'}
+[0.296590] (robot_interface) StdoutLine: {'line': b'[ 87%] Built target robot_interface__rosidl_typesupport_introspection_c__pyext\n'}
+[0.297064] (robot_interface) StdoutLine: {'line': b'[100%] Built target robot_interface__rosidl_typesupport_fastrtps_c__pyext\n'}
+[0.297349] (robot_interface) StdoutLine: {'line': b'[100%] Built target robot_interface__rosidl_typesupport_c__pyext\n'}
+[0.299514] (-) TimerEvent: {}
+[0.399875] (-) TimerEvent: {}
+[0.438867] (robot_interface) StdoutLine: {'line': b'running egg_info\n'}
+[0.440162] (robot_interface) StdoutLine: {'line': b'writing robot_interface.egg-info/PKG-INFO\n'}
+[0.440643] (robot_interface) StdoutLine: {'line': b'writing dependency_links to robot_interface.egg-info/dependency_links.txt\n'}
+[0.440899] (robot_interface) StdoutLine: {'line': b'writing top-level names to robot_interface.egg-info/top_level.txt\n'}
+[0.444442] (robot_interface) StdoutLine: {'line': b"reading manifest file 'robot_interface.egg-info/SOURCES.txt'\n"}
+[0.445359] (robot_interface) StdoutLine: {'line': b"writing manifest file 'robot_interface.egg-info/SOURCES.txt'\n"}
+[0.471108] (robot_interface) StdoutLine: {'line': b'[100%] Built target ament_cmake_python_build_robot_interface_egg\n'}
+[0.481925] (robot_interface) CommandEnded: {'returncode': 0}
+[0.499990] (-) TimerEvent: {}
+[0.537353] (robot_interface) JobProgress: {'identifier': 'robot_interface', 'progress': 'install'}
+[0.546002] (robot_interface) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/team-2/robot_ws/build/robot_interface'], 'cwd': '/home/team-2/robot_ws/build/robot_interface', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'team-2'), ('SSH_CLIENT', '18.25.30.160 62080 22'), ('XDG_SESSION_TYPE', 'tty'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('MOTD_SHOWN', 'pam'), ('HOME', '/home/team-2'), ('OLDPWD', '/home/team-2'), ('SSH_TTY', '/dev/pts/0'), ('ROS_PYTHON_VERSION', '3'), ('ROS_IP', '18.25.31.142'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'team-2'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('TERM', 'xterm-256color'), ('XDG_SESSION_ID', '2'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/home/team-2/.local/bin:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', 'localhost:10.0'), ('LANG', 'en_US.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('SHELL', '/bin/bash'), ('ROS_MASTER_URI', 'http://18.25.31.142:11311'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('PWD', '/home/team-2/robot_ws/build/robot_interface'), ('SSH_CONNECTION', '18.25.30.160 62080 18.25.31.142 22'), ('XDG_DATA_DIRS', '/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[0.559074] (robot_interface) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[0.559589] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/ament_index/resource_index/rosidl_interfaces/robot_interface\n'}
+[0.559898] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface\n'}
+[0.560062] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg\n'}
+[0.560232] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg/detail\n'}
+[0.560509] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg/detail/drive_cmd__functions.h\n'}
+[0.560669] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg/detail/drive_cmd__type_support.h\n'}
+[0.560797] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg/detail/drive_cmd__functions.c\n'}
+[0.560922] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg/detail/drive_cmd__struct.h\n'}
+[0.561085] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg/rosidl_generator_c__visibility_control.h\n'}
+[0.561199] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg/drive_cmd.h\n'}
+[0.561329] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/environment/library_path.sh\n'}
+[0.561455] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/environment/library_path.dsv\n'}
+[0.561589] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/lib/librobot_interface__rosidl_generator_c.so\n'}
+[0.561927] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface\n'}
+[0.562118] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg\n'}
+[0.562239] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg/rosidl_typesupport_fastrtps_c__visibility_control.h\n'}
+[0.562384] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg/detail\n'}
+[0.562514] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg/detail/drive_cmd__rosidl_typesupport_fastrtps_c.h\n'}
+[0.562718] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/lib/librobot_interface__rosidl_typesupport_fastrtps_c.so\n'}
+[0.562880] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface\n'}
+[0.563085] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg\n'}
+[0.563222] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg/rosidl_typesupport_introspection_c__visibility_control.h\n'}
+[0.563342] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg/detail\n'}
+[0.563502] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg/detail/drive_cmd__type_support.c\n'}
+[0.563668] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg/detail/drive_cmd__rosidl_typesupport_introspection_c.h\n'}
+[0.563790] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/lib/librobot_interface__rosidl_typesupport_introspection_c.so\n'}
+[0.564070] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/lib/librobot_interface__rosidl_typesupport_c.so\n'}
+[0.564325] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface\n'}
+[0.564523] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg\n'}
+[0.564725] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg/drive_cmd.hpp\n'}
+[0.564929] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg/detail\n'}
+[0.565067] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg/detail/drive_cmd__struct.hpp\n'}
+[0.565184] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg/detail/drive_cmd__traits.hpp\n'}
+[0.565331] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg/detail/drive_cmd__builder.hpp\n'}
+[0.565493] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface\n'}
+[0.565626] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg\n'}
+[0.565770] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg/detail\n'}
+[0.565904] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg/detail/dds_fastrtps\n'}
+[0.566035] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg/detail/drive_cmd__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[0.566182] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h\n'}
+[0.566363] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/lib/librobot_interface__rosidl_typesupport_fastrtps_cpp.so\n'}
+[0.566476] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface\n'}
+[0.566620] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg\n'}
+[0.566773] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg/detail\n'}
+[0.566911] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg/detail/drive_cmd__type_support.cpp\n'}
+[0.567029] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/include/robot_interface/robot_interface/msg/detail/drive_cmd__rosidl_typesupport_introspection_cpp.hpp\n'}
+[0.567150] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/lib/librobot_interface__rosidl_typesupport_introspection_cpp.so\n'}
+[0.567334] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/lib/librobot_interface__rosidl_typesupport_cpp.so\n'}
+[0.567609] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/environment/pythonpath.sh\n'}
+[0.567761] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/environment/pythonpath.dsv\n'}
+[0.568290] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/local/lib/python3.10/dist-packages/robot_interface-0.0.0-py3.10.egg-info\n'}
+[0.568458] (robot_interface) StdoutLine: {'line': b'-- Installing: /home/team-2/robot_ws/install/robot_interface/local/lib/python3.10/dist-packages/robot_interface-0.0.0-py3.10.egg-info/PKG-INFO\n'}
+[0.568630] (robot_interface) StdoutLine: {'line': b'-- Installing: /home/team-2/robot_ws/install/robot_interface/local/lib/python3.10/dist-packages/robot_interface-0.0.0-py3.10.egg-info/SOURCES.txt\n'}
+[0.568802] (robot_interface) StdoutLine: {'line': b'-- Installing: /home/team-2/robot_ws/install/robot_interface/local/lib/python3.10/dist-packages/robot_interface-0.0.0-py3.10.egg-info/dependency_links.txt\n'}
+[0.568981] (robot_interface) StdoutLine: {'line': b'-- Installing: /home/team-2/robot_ws/install/robot_interface/local/lib/python3.10/dist-packages/robot_interface-0.0.0-py3.10.egg-info/top_level.txt\n'}
+[0.569210] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/local/lib/python3.10/dist-packages/robot_interface\n'}
+[0.569389] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/local/lib/python3.10/dist-packages/robot_interface/_robot_interface_s.ep.rosidl_typesupport_c.c\n'}
+[0.569581] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/local/lib/python3.10/dist-packages/robot_interface/robot_interface_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so\n'}
+[0.569847] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/local/lib/python3.10/dist-packages/robot_interface/_robot_interface_s.ep.rosidl_typesupport_fastrtps_c.c\n'}
+[0.569989] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/local/lib/python3.10/dist-packages/robot_interface/msg\n'}
+[0.570122] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/local/lib/python3.10/dist-packages/robot_interface/msg/_drive_cmd_s.c\n'}
+[0.570254] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/local/lib/python3.10/dist-packages/robot_interface/msg/_drive_cmd.py\n'}
+[0.570385] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/local/lib/python3.10/dist-packages/robot_interface/msg/__init__.py\n'}
+[0.570512] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/local/lib/python3.10/dist-packages/robot_interface/__init__.py\n'}
+[0.570612] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/local/lib/python3.10/dist-packages/robot_interface/_robot_interface_s.ep.rosidl_typesupport_introspection_c.c\n'}
+[0.570711] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/local/lib/python3.10/dist-packages/robot_interface/librobot_interface__rosidl_generator_py.so\n'}
+[0.570809] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/local/lib/python3.10/dist-packages/robot_interface/robot_interface_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so\n'}
+[0.570907] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/local/lib/python3.10/dist-packages/robot_interface/robot_interface_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so\n'}
+[0.600115] (-) TimerEvent: {}
+[0.602038] (robot_interface) StdoutLine: {'line': b"Listing '/home/team-2/robot_ws/install/robot_interface/local/lib/python3.10/dist-packages/robot_interface'...\n"}
+[0.602196] (robot_interface) StdoutLine: {'line': b"Listing '/home/team-2/robot_ws/install/robot_interface/local/lib/python3.10/dist-packages/robot_interface/msg'...\n"}
+[0.606677] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/local/lib/python3.10/dist-packages/robot_interface/robot_interface_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so\n'}
+[0.607089] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/local/lib/python3.10/dist-packages/robot_interface/robot_interface_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so\n'}
+[0.607535] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/local/lib/python3.10/dist-packages/robot_interface/robot_interface_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so\n'}
+[0.608035] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/lib/librobot_interface__rosidl_generator_py.so\n'}
+[0.608374] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/msg/DriveCmd.idl\n'}
+[0.608524] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/msg/DriveCmd.msg\n'}
+[0.608736] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/ament_index/resource_index/package_run_dependencies/robot_interface\n'}
+[0.608957] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/ament_index/resource_index/parent_prefix_path/robot_interface\n'}
+[0.609154] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/environment/ament_prefix_path.sh\n'}
+[0.609342] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/environment/ament_prefix_path.dsv\n'}
+[0.609515] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/environment/path.sh\n'}
+[0.609704] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/environment/path.dsv\n'}
+[0.609802] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/local_setup.bash\n'}
+[0.609911] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/local_setup.sh\n'}
+[0.610042] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/local_setup.zsh\n'}
+[0.610161] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/local_setup.dsv\n'}
+[0.610284] (robot_interface) StdoutLine: {'line': b'-- Installing: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/package.dsv\n'}
+[0.610397] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/ament_index/resource_index/packages/robot_interface\n'}
+[0.611053] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/cmake/export_robot_interface__rosidl_generator_cExport.cmake\n'}
+[0.611212] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/cmake/export_robot_interface__rosidl_generator_cExport-noconfig.cmake\n'}
+[0.611457] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/cmake/export_robot_interface__rosidl_typesupport_fastrtps_cExport.cmake\n'}
+[0.611621] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/cmake/export_robot_interface__rosidl_typesupport_fastrtps_cExport-noconfig.cmake\n'}
+[0.611927] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/cmake/robot_interface__rosidl_typesupport_introspection_cExport.cmake\n'}
+[0.612078] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/cmake/robot_interface__rosidl_typesupport_introspection_cExport-noconfig.cmake\n'}
+[0.612283] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/cmake/robot_interface__rosidl_typesupport_cExport.cmake\n'}
+[0.612445] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/cmake/robot_interface__rosidl_typesupport_cExport-noconfig.cmake\n'}
+[0.612645] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/cmake/export_robot_interface__rosidl_generator_cppExport.cmake\n'}
+[0.612949] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/cmake/export_robot_interface__rosidl_typesupport_fastrtps_cppExport.cmake\n'}
+[0.613112] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/cmake/export_robot_interface__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake\n'}
+[0.613383] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/cmake/robot_interface__rosidl_typesupport_introspection_cppExport.cmake\n'}
+[0.613583] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/cmake/robot_interface__rosidl_typesupport_introspection_cppExport-noconfig.cmake\n'}
+[0.613844] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/cmake/robot_interface__rosidl_typesupport_cppExport.cmake\n'}
+[0.613983] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/cmake/robot_interface__rosidl_typesupport_cppExport-noconfig.cmake\n'}
+[0.614235] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/cmake/export_robot_interface__rosidl_generator_pyExport.cmake\n'}
+[0.614462] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/cmake/export_robot_interface__rosidl_generator_pyExport-noconfig.cmake\n'}
+[0.614660] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/cmake/rosidl_cmake-extras.cmake\n'}
+[0.614827] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/cmake/ament_cmake_export_include_directories-extras.cmake\n'}
+[0.615010] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/cmake/ament_cmake_export_libraries-extras.cmake\n'}
+[0.615134] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/cmake/ament_cmake_export_targets-extras.cmake\n'}
+[0.615244] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake\n'}
+[0.615373] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/cmake/ament_cmake_export_dependencies-extras.cmake\n'}
+[0.615508] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake\n'}
+[0.615617] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/cmake/robot_interfaceConfig.cmake\n'}
+[0.615727] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/cmake/robot_interfaceConfig-version.cmake\n'}
+[0.615840] (robot_interface) StdoutLine: {'line': b'-- Up-to-date: /home/team-2/robot_ws/install/robot_interface/share/robot_interface/package.xml\n'}
+[0.617454] (robot_interface) CommandEnded: {'returncode': 0}
+[0.700266] (-) TimerEvent: {}
+[0.800555] (-) TimerEvent: {}
+[0.821327] (robot_interface) JobEnded: {'identifier': 'robot_interface', 'rc': 0}
+[0.822092] (robot) JobStarted: {'identifier': 'robot'}
+[0.900685] (-) TimerEvent: {}
+[1.000956] (-) TimerEvent: {}
+[1.101222] (-) TimerEvent: {}
+[1.201471] (-) TimerEvent: {}
+[1.301771] (-) TimerEvent: {}
+[1.402059] (-) TimerEvent: {}
+[1.502380] (-) TimerEvent: {}
+[1.506510] (robot) Command: {'cmd': ['/usr/bin/python3', 'setup.py', 'egg_info', '--egg-base', '../../build/robot', 'build', '--build-base', '/home/team-2/robot_ws/build/robot/build', 'install', '--record', '/home/team-2/robot_ws/build/robot/install.log', '--single-version-externally-managed'], 'cwd': '/home/team-2/robot_ws/src/robot', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'team-2', 'SSH_CLIENT': '18.25.30.160 62080 22', 'XDG_SESSION_TYPE': 'tty', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/home/team-2/robot_ws/install/robot_interface/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib', 'MOTD_SHOWN': 'pam', 'HOME': '/home/team-2', 'OLDPWD': '/home/team-2', 'SSH_TTY': '/dev/pts/0', 'ROS_PYTHON_VERSION': '3', 'ROS_IP': '18.25.31.142', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'ROS_DISTRO': 'humble', 'LOGNAME': 'team-2', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'TERM': 'xterm-256color', 'XDG_SESSION_ID': '2', 'ROS_LOCALHOST_ONLY': '0', 'PATH': '/home/team-2/.local/bin:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin', 'XDG_RUNTIME_DIR': '/run/user/1000', 'DISPLAY': 'localhost:10.0', 'LANG': 'en_US.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:', 'AMENT_PREFIX_PATH': '/home/team-2/robot_ws/install/robot_interface:/opt/ros/humble', 'SHELL': '/bin/bash', 'ROS_MASTER_URI': 'http://18.25.31.142:11311', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'PWD': '/home/team-2/robot_ws/build/robot', 'SSH_CONNECTION': '18.25.30.160 62080 18.25.31.142 22', 'XDG_DATA_DIRS': '/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/team-2/robot_ws/build/robot/prefix_override:/home/team-2/robot_ws/install/robot/lib/python3.10/site-packages:/home/team-2/robot_ws/install/robot_interface/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages', 'COLCON': '1', 'CMAKE_PREFIX_PATH': '/home/team-2/robot_ws/install/robot_interface'}, 'shell': False}
+[1.602473] (-) TimerEvent: {}
+[1.702748] (-) TimerEvent: {}
+[1.733544] (robot) StdoutLine: {'line': b'running egg_info\n'}
+[1.734237] (robot) StdoutLine: {'line': b'writing ../../build/robot/robot.egg-info/PKG-INFO\n'}
+[1.739296] (robot) StdoutLine: {'line': b'writing dependency_links to ../../build/robot/robot.egg-info/dependency_links.txt\n'}
+[1.739679] (robot) StdoutLine: {'line': b'writing entry points to ../../build/robot/robot.egg-info/entry_points.txt\n'}
+[1.740002] (robot) StdoutLine: {'line': b'writing requirements to ../../build/robot/robot.egg-info/requires.txt\n'}
+[1.740328] (robot) StdoutLine: {'line': b'writing top-level names to ../../build/robot/robot.egg-info/top_level.txt\n'}
+[1.745030] (robot) StdoutLine: {'line': b"reading manifest file '../../build/robot/robot.egg-info/SOURCES.txt'\n"}
+[1.746759] (robot) StdoutLine: {'line': b"writing manifest file '../../build/robot/robot.egg-info/SOURCES.txt'\n"}
+[1.747057] (robot) StdoutLine: {'line': b'running build\n'}
+[1.747178] (robot) StdoutLine: {'line': b'running build_py\n'}
+[1.747498] (robot) StdoutLine: {'line': b'copying robot/kbd_driver.py -> /home/team-2/robot_ws/build/robot/build/lib/robot\n'}
+[1.748386] (robot) StdoutLine: {'line': b'running install\n'}
+[1.748675] (robot) StderrLine: {'line': b'/usr/lib/python3/dist-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.\n'}
+[1.748831] (robot) StderrLine: {'line': b'  warnings.warn(\n'}
+[1.749129] (robot) StdoutLine: {'line': b'running install_lib\n'}
+[1.750240] (robot) StdoutLine: {'line': b'copying /home/team-2/robot_ws/build/robot/build/lib/robot/kbd_driver.py -> /home/team-2/robot_ws/install/robot/lib/python3.10/site-packages/robot\n'}
+[1.751145] (robot) StdoutLine: {'line': b'byte-compiling /home/team-2/robot_ws/install/robot/lib/python3.10/site-packages/robot/kbd_driver.py to kbd_driver.cpython-310.pyc\n'}
+[1.752367] (robot) StdoutLine: {'line': b'running install_data\n'}
+[1.754093] (robot) StdoutLine: {'line': b'running install_egg_info\n'}
+[1.756097] (robot) StdoutLine: {'line': b"removing '/home/team-2/robot_ws/install/robot/lib/python3.10/site-packages/robot-0.0.0-py3.10.egg-info' (and everything under it)\n"}
+[1.756483] (robot) StdoutLine: {'line': b'Copying ../../build/robot/robot.egg-info to /home/team-2/robot_ws/install/robot/lib/python3.10/site-packages/robot-0.0.0-py3.10.egg-info\n'}
+[1.757579] (robot) StdoutLine: {'line': b'running install_scripts\n'}
+[1.778034] (robot) StdoutLine: {'line': b'Installing kbd_driver script to /home/team-2/robot_ws/install/robot/lib/robot\n'}
+[1.778290] (robot) StdoutLine: {'line': b'Installing robot script to /home/team-2/robot_ws/install/robot/lib/robot\n'}
+[1.778616] (robot) StdoutLine: {'line': b"writing list of installed files to '/home/team-2/robot_ws/build/robot/install.log'\n"}
+[1.800228] (robot) CommandEnded: {'returncode': 0}
+[1.803059] (-) TimerEvent: {}
+[1.849038] (robot) JobEnded: {'identifier': 'robot', 'rc': 0}
+[1.849505] (-) EventReactorShutdown: {}
