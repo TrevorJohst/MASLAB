@@ -1,0 +1,27 @@
+[0.710s] Invoking command in '/home/team-2/robot_ws/src/robot': PYTHONPATH=/home/team-2/robot_ws/build/robot/prefix_override:/home/team-2/robot_ws/install/robot/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/robot build --build-base /home/team-2/robot_ws/build/robot/build install --record /home/team-2/robot_ws/build/robot/install.log --single-version-externally-managed
+[0.937s] running egg_info
+[0.938s] writing ../../build/robot/robot.egg-info/PKG-INFO
+[0.938s] writing dependency_links to ../../build/robot/robot.egg-info/dependency_links.txt
+[0.938s] writing entry points to ../../build/robot/robot.egg-info/entry_points.txt
+[0.939s] writing requirements to ../../build/robot/robot.egg-info/requires.txt
+[0.939s] writing top-level names to ../../build/robot/robot.egg-info/top_level.txt
+[0.941s] reading manifest file '../../build/robot/robot.egg-info/SOURCES.txt'
+[0.942s] writing manifest file '../../build/robot/robot.egg-info/SOURCES.txt'
+[0.942s] running build
+[0.942s] running build_py
+[0.942s] copying robot/robot.py -> /home/team-2/robot_ws/build/robot/build/lib/robot
+[0.943s] running install
+[0.943s] /usr/lib/python3/dist-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
+[0.943s]   warnings.warn(
+[0.944s] running install_lib
+[0.945s] copying /home/team-2/robot_ws/build/robot/build/lib/robot/robot.py -> /home/team-2/robot_ws/install/robot/lib/python3.10/site-packages/robot
+[0.945s] byte-compiling /home/team-2/robot_ws/install/robot/lib/python3.10/site-packages/robot/robot.py to robot.cpython-310.pyc
+[0.946s] running install_data
+[0.947s] running install_egg_info
+[0.949s] removing '/home/team-2/robot_ws/install/robot/lib/python3.10/site-packages/robot-0.0.0-py3.10.egg-info' (and everything under it)
+[0.950s] Copying ../../build/robot/robot.egg-info to /home/team-2/robot_ws/install/robot/lib/python3.10/site-packages/robot-0.0.0-py3.10.egg-info
+[0.951s] running install_scripts
+[0.973s] Installing kbd_driver script to /home/team-2/robot_ws/install/robot/lib/robot
+[0.973s] Installing robot script to /home/team-2/robot_ws/install/robot/lib/robot
+[0.973s] writing list of installed files to '/home/team-2/robot_ws/build/robot/install.log'
+[0.995s] Invoked command in '/home/team-2/robot_ws/src/robot' returned '0': PYTHONPATH=/home/team-2/robot_ws/build/robot/prefix_override:/home/team-2/robot_ws/install/robot/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/robot build --build-base /home/team-2/robot_ws/build/robot/build install --record /home/team-2/robot_ws/build/robot/install.log --single-version-externally-managed

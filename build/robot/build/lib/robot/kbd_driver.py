@@ -1,4 +1,3 @@
-
 from robot_interface.msg import DriveCmd
 
 import rclpy
@@ -14,12 +13,13 @@ RATE = 10
 PADDING = 32
 BOX_SIZE = 64
 SCREEN_SIZE = BOX_SIZE * 3 + PADDING * 2
-SPEED = 0.5
+TURN_SPEED = 0.485
+SPEED = 0.51
 KEY_SPEEDS = {
     pygame.K_w: (SPEED, SPEED),
-    pygame.K_a: (SPEED, -SPEED),
+    pygame.K_a: (-TURN_SPEED, TURN_SPEED),
     pygame.K_s: (-SPEED, -SPEED),
-    pygame.K_d: (-SPEED, SPEED)
+    pygame.K_d: (TURN_SPEED, -TURN_SPEED)
 }
 BOX_OFFSETS = {
     pygame.K_w: (0, -1),
@@ -82,7 +82,7 @@ class KeyboardDriverNode(Node):
         timer_period = 1.0 / RATE
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
-    def timer_callback(self):
+    def timer_callback(self):                
         drive_speed = calculate_drive_speed(self.screen, self.surface)
         drive_cmd_msg = DriveCmd()
         drive_cmd_msg.l_speed = float(drive_speed[0])
