@@ -1,7 +1,7 @@
 
 #!/usr/bin/env python3
 
-from kitware_interface.msg import DriveCmd
+from robot_interface.msg import DriveCmd
 
 import rclpy
 from rclpy.node import Node
