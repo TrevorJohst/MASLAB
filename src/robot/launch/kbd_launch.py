@@ -13,5 +13,10 @@ def generate_launch_description():
             executable='kbd_driver',
             output='screen'
         ),
+        Node(
+            package='robot',
+            executable='sensor',
+            output='screen'
+        )
     ])
 
