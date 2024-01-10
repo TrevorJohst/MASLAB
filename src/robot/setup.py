@@ -25,7 +25,8 @@ setup(
         'console_scripts': [
             'robot = robot.robot:main',
             'kbd_driver = robot.kbd_driver:main',
-            'driver = robot.driver:main'
+            'driver = robot.driver:main',
+            'sensor = robot.sensor:main'
         ],
     },
 )

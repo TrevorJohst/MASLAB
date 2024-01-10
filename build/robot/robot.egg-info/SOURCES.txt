@@ -11,8 +11,10 @@ setup.py
 launch/kbd_launch.py
 resource/robot
 robot/__init__.py
+robot/driver.py
 robot/kbd_driver.py
 robot/robot.py
+robot/sensor.py
 test/test_copyright.py
 test/test_flake8.py
 test/test_pep257.py
