@@ -2,9 +2,9 @@
 
 import rclpy
 from math import fmod, isclose
-from robot_interface.msg import DriveCmd
+from robot_interface.msg import DriveCmd, Distance
 from tamproxy import ROS2Sketch, Timer
-from tamproxy.devices import AnalogInput, Motor, Encoder
+from tamproxy.devices import Motor, Encoder, TimeOfFlight
 
 
 class RobotNode(ROS2Sketch):
@@ -21,8 +21,13 @@ class RobotNode(ROS2Sketch):
     RMOTOR_PINS = (2,3)  # DIR, PWM
     LENCODER_PINS = (19,20)
     RENCODER_PINS = (17,18)
+    TOF_PIN = 33
 
-    def setup(self):
+    def __init__(self, rate=100):
+        super().__init__(self, rate=rate)
+        self.rate = rate
+
+    def setup(self, tof_rate):
         """
         One-time method that sets up the robot, like in Arduino
         Code is run when run_setup() method is called
@@ -36,7 +41,8 @@ class RobotNode(ROS2Sketch):
         self.drive_sub  # prevent unused variable warning
 
         # Create timer object
-        self.timer = Timer()
+        timer_period = 1.0 / self.rate # convert rate to seconds
+        self.timer = self.create_timer(timer_period, self.timer_callback)
 
         # Create the motor objects
         self.lmotor = Motor(self.tamp, *self.LMOTOR_PINS)
@@ -48,17 +54,35 @@ class RobotNode(ROS2Sketch):
         self.prev_lencoder = 0
         self.prev_rencoder = 0
 
+        # Create TOF sensor object
+        self.tof = TimeOfFlight(self.tamp, self.tof_pin, 1)
+        self.tof.enable()
+
+        # Create publisher for the TOF sensor
+        self.tof_publisher_ = self.create_publisher(Distance, 'distance', 10)
+
     def speed_to_dir_pwm(self, speed):
         """Converts floating point speed (-1.0 to 1.0) to dir and pwm values"""
         speed = max(min(speed, 1), -1)
         return speed > 0, int(abs(speed * 255))
 
+    def timer_callback(self):
+        """Publishes the teensy sensor data"""
+
+        # Get current distance and publish it
+        dist = Distance()
+        dist.distance = float(self.tof.dist)
+        self.get_logger().info('Publishing: "%s"' % dist.distance)
+        self.publisher_.publish(dist)
+
     def drive_callback(self, msg):
         """Processes a new drive command and controls motors appropriately"""
 
+        # DEPRECATED AS OF 1/11/24 :)
+
         # Get time
         dt = self.timer.millis()
-        self.timer.reset()
+        #self.timer.reset()
 
         # Store encoder values
         cur_lencoder = self.lencoder.val
@@ -90,8 +114,8 @@ class RobotNode(ROS2Sketch):
         print(l_speed)
 
         # Write to the motors
-        self.lmotor.write(*self.speed_to_dir_pwm(-l_speed))
-        self.rmotor.write(*self.speed_to_dir_pwm(r_speed))
+        self.lmotor.write(*self.speed_to_dir_pwm(-msg.l_speed))
+        self.rmotor.write(*self.speed_to_dir_pwm(msg.r_speed))
 
         # Store previous encoder values
         self.prev_lencoder = fmod(cur_lencoder, self.CLAMP)
