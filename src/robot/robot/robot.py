@@ -19,8 +19,8 @@ class RobotNode(ROS2Sketch):
     # Pin mappings
     LMOTOR_PINS = (4,5)  # DIR, PWM
     RMOTOR_PINS = (2,3)  # DIR, PWM
-    LENCODER_PINS = (19,20)
-    RENCODER_PINS = (17,18)
+    LENCODER_PINS = (35,36)
+    RENCODER_PINS = (39,40)
     TOF_PIN = 33
 
     # Publish rate
@@ -54,11 +54,11 @@ class RobotNode(ROS2Sketch):
         self.prev_rencoder = 0
 
         # Create TOF sensor object
-        self.tof = TimeOfFlight(self.tamp, self.TOF_PIN, 1)
-        self.tof.enable()
+        # self.tof = TimeOfFlight(self.tamp, self.TOF_PIN, 1)
+        # self.tof.enable()
 
-        # Create publisher for the TOF sensor
-        self.tof_publisher_ = self.create_publisher(Distance, 'distance', 10)
+        # # Create publisher for the TOF sensor
+        # self.tof_publisher_ = self.create_publisher(Distance, 'distance', 10)
 
     def speed_to_dir_pwm(self, speed):
         """Converts floating point speed (-1.0 to 1.0) to dir and pwm values"""
@@ -81,7 +81,7 @@ class RobotNode(ROS2Sketch):
 
         # Get time
         dt = self.timer.millis()
-        #self.timer.reset()
+        self.timer.reset()
 
         # Store encoder values
         cur_lencoder = self.lencoder.val
@@ -113,8 +113,8 @@ class RobotNode(ROS2Sketch):
         print(l_speed)
 
         # Write to the motors
-        self.lmotor.write(*self.speed_to_dir_pwm(-msg.l_speed))
-        self.rmotor.write(*self.speed_to_dir_pwm(msg.r_speed))
+        self.lmotor.write(*self.speed_to_dir_pwm(-l_speed))
+        self.rmotor.write(*self.speed_to_dir_pwm(r_speed))
 
         # Store previous encoder values
         self.prev_lencoder = fmod(cur_lencoder, self.CLAMP)
