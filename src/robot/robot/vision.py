@@ -8,7 +8,10 @@ from rclpy.node import Node
 from robot_interface.msg import Angle
 
 class VisionNode(Node):
-    """Publisher node that interfaces with webcam and publishes angle and distance data"""
+    """
+    Publisher node that interfaces with webcam and publishes angle and distance data
+    Publishes 0 for angle if block is centered, + if to robot's right, - if to robot's left
+    """
 
     # Which camera to use (should be fixed but this works for now)
     CAMERA = 0
