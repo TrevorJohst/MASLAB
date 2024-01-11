@@ -71,8 +71,8 @@ class RobotNode(ROS2Sketch):
         # Get current distance and publish it
         dist = Distance()
         dist.distance = float(self.tof.dist)
-        self.get_logger().info('Publishing: "%s"' % dist.distance)
-        self.tof_publisher_.publish(dist)
+        self.get_logger().info('Publishing: "%s"' % dist.distance) # [DEBUG ONLY]
+        self.publisher_.publish(dist)
 
     def drive_callback(self, msg):
         """Processes a new drive command and controls motors appropriately"""
