@@ -54,7 +54,7 @@ class RobotNode(ROS2Sketch):
         self.prev_rencoder = 0
 
         # Create TOF sensor object
-        self.tof = TimeOfFlight(self.tamp, self.tof_pin, 1)
+        self.tof = TimeOfFlight(self.tamp, self.TOF_PIN, 1)
         self.tof.enable()
 
         # Create publisher for the TOF sensor
@@ -72,7 +72,7 @@ class RobotNode(ROS2Sketch):
         dist = Distance()
         dist.distance = float(self.tof.dist)
         self.get_logger().info('Publishing: "%s"' % dist.distance)
-        self.publisher_.publish(dist)
+        self.tof_publisher_.publish(dist)
 
     def drive_callback(self, msg):
         """Processes a new drive command and controls motors appropriately"""
