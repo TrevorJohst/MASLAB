@@ -72,14 +72,14 @@ class RobotNode(ROS2Sketch):
         # Get current distance and publish it
         dist = Distance()
         dist.distance = float(self.tof.dist)
-        self.get_logger().info('Distance: ' + str(dist.distance)) # [DEBUG ONLY]
+        #self.get_logger().info('Distance: ' + str(dist.distance)) # [DEBUG ONLY]
         self.tof_publisher_.publish(dist)
 
         # Get current encoder data
         enc = Encoders()
         enc.lencoder = self.lencoder.val
         enc.rencoder = self.rencoder.val
-        self.get_logger().info('Encoders: ' + str(enc.lencoder) + ", " + str(enc.rencoder)) # [DEBUG ONLY]
+        #self.get_logger().info('Encoders: ' + str(enc.lencoder) + ", " + str(enc.rencoder)) # [DEBUG ONLY]
         self.enc_publisher_.publish(enc)
 
     def drive_callback(self, msg):

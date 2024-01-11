@@ -21,7 +21,7 @@ class VisionNode(Node):
     RED_THRESHOLD = ([0,160,140], [10,255,255])
 
     def __init__(self, color):
-        super().__init__('vision node')
+        super().__init__('vision_node')
 
         # Create angle publisher
         self.angle_publisher_ = self.create_publisher(Angle, 'angle', 10)
@@ -29,7 +29,6 @@ class VisionNode(Node):
         # Create timer object
         timer_period = 1.0 / self.RATE # convert to seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
-        self.i = 0
         
         # VideoCapture object we can use to get frames from webcam
         self.cap = cv2.VideoCapture(self.CAMERA)
@@ -63,28 +62,26 @@ class VisionNode(Node):
             c = max(contours, key = cv2.contourArea)
 
             # Get a bounding rectangle around that contour
-            x, y, w, h = cv2.boundingRect(c)
-
-            # Draw the rectangle on our frame [DEBUG ONLY]
-            cv2.rectangle(frame, (x, y), (x+w, y+h), (0,255,0), 2)  
+            x, _, w, _ = cv2.boundingRect(c)
             
-        # Find center of bounding rectangle
-        center = x + w/2
+            # Find center of bounding rectangle
+            center = x + w/2
+            angle = center - 160
+        else:
+            angle = float('nan')
 
         # Create the angle message
         angle_msg = Angle()
-        angle_msg.angle = 320 - center
+        angle_msg.angle = angle
         self.angle_publisher_.publish(angle_msg)
-        self.get_logger().info('Publishing: "%s"' % angle_msg.data) # [DEBUG ONLY]
+        self.get_logger().info("Angle: " + str(angle_msg.angle))
           
-        # Display that frame
-        cv2.imshow('frame', cv2.resize(frame, (320, 240)))
 
 def main():
 
     rclpy.init()
 
-    vn = VisionNode()
+    vn = VisionNode("red")
     rclpy.spin(vn)
 
     vn.destroy_node()

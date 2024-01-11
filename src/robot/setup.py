@@ -25,7 +25,8 @@ setup(
         'console_scripts': [
             'robot = robot.robot:main',
             'kbd_driver = robot.kbd_driver:main',
-            'drive = robot.drive:main'
+            'drive = robot.drive:main',
+            'vision = robot.vision:main'
         ],
     },
 )
