@@ -28,14 +28,11 @@ class TOFNode(ROS2Sketch):
                 10)
         timer_period = 1.0 / RATE
         self.timer = self.create_timer(timer_period, self.timer_callback)
-        self.distance = 15
 
     def timer_callback(self):
-        print(self.tof.dist, "mm", "RAWRRAWRRAWRARAWRWRA")
         tof_read_msg = SensorCmd()
         tof_read_msg.tof1_distance = float(self.tof.dist)
         self.tof_read_publisher.publish(tof_read_msg)
-        self.distance -= 1
 
 def main():
     rclpy.init()

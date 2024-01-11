@@ -26,7 +26,8 @@ setup(
             'robot = robot.robot:main',
             'kbd_driver = robot.kbd_driver:main',
             'driver = robot.driver:main',
-            'sensor = robot.sensor:main'
+            'sensor = robot.sensor:main',
+            'test = robot.test:main'
         ],
     },
 )
