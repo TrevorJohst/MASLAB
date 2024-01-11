@@ -13,8 +13,8 @@ class DistanceNode(ROS2Sketch):
     # Pin of TOF sensor on teensy
     PIN = 33
 
-    def __init__(self, rate=100, node_name="teensy"):
-        super.__init__(rate=rate)
+    def __init__(self, rate=100, node_name="TOF Sensor"):
+        super.__init__(self, rate=rate)
         self.rate = rate
 
     def setup(self):
