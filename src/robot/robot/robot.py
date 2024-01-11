@@ -26,7 +26,7 @@ class RobotNode(ROS2Sketch):
     # Publish rate
     RATE = 100
 
-    def setup(self, tof_rate):
+    def setup(self):
         """
         One-time method that sets up the robot, like in Arduino
         Code is run when run_setup() method is called
