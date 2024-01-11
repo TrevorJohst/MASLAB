@@ -1,7 +1,7 @@
 
 #!/usr/bin/env python3
 
-from robot_interface.msg import sensorCmd
+from robot_interface.msg import SensorCmd
 
 import rclpy
 
@@ -14,8 +14,7 @@ class TOFNode(ROS2Sketch):
     #pin of sensor on teensy
     tof_pin = 33
 
-    def __init__(self):
-        super().__init__('tof')
+    def setup(self):
 
         # Add all ToFs
         self.tof = TimeOfFlight(self.tamp, self.tof_pin, 1)
@@ -24,7 +23,7 @@ class TOFNode(ROS2Sketch):
         self.tof.enable()
 
         self.tof_read_publisher = self.create_publisher(
-                sensorCmd,
+                SensorCmd,
                 'sensor_cmd',
                 10)
         timer_period = 1.0 / RATE
@@ -33,7 +32,7 @@ class TOFNode(ROS2Sketch):
 
     def timer_callback(self):
         print(self.tof.dist, "mm", "RAWRRAWRRAWRARAWRWRA")
-        tof_read_msg = sensorCmd()
+        tof_read_msg = SensorCmd()
         tof_read_msg.tof1_distance = float(self.tof.dist)
         self.tof_read_publisher.publish(tof_read_msg)
         self.distance -= 1
@@ -41,7 +40,7 @@ class TOFNode(ROS2Sketch):
 def main():
     rclpy.init()
 
-    tof = TOFNode(rate=100)  # Run at 100Hz (10ms loop)
+    tof = TOFNode()  # Run at 100Hz (10ms loop)
     tof.run_setup()     # Run tamproxy setup and code in setup() method
     rclpy.spin(tof)
 
