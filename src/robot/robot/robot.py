@@ -23,9 +23,8 @@ class RobotNode(ROS2Sketch):
     RENCODER_PINS = (17,18)
     TOF_PIN = 33
 
-    def __init__(self, rate=100):
-        super().__init__(self, rate=rate)
-        self.rate = rate
+    # Publish rate
+    RATE = 100
 
     def setup(self, tof_rate):
         """
@@ -41,7 +40,7 @@ class RobotNode(ROS2Sketch):
         self.drive_sub  # prevent unused variable warning
 
         # Create timer object
-        timer_period = 1.0 / self.rate # convert rate to seconds
+        timer_period = 1.0 / self.RATE # convert rate to seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
         # Create the motor objects
@@ -124,7 +123,7 @@ class RobotNode(ROS2Sketch):
 def main():
     rclpy.init()
 
-    rb = RobotNode(rate=100)  # Run at 100Hz (10ms loop)
+    rb = RobotNode()
     rb.run_setup()     # Run tamproxy setup and code in setup() method
     rclpy.spin(rb)
 
