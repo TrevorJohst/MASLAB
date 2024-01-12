@@ -2,20 +2,14 @@
 
 import rclpy
 from math import fmod, isclose
-from robot_interface.msg import DriveCmd, Distance, Encoders
+from robot_interface.msg import DriveCmd, Distance, Encoders, Angle
 from tamproxy import ROS2Sketch, Timer
 from tamproxy.devices import Motor, Encoder, TimeOfFlight
 
 
 class RobotNode(ROS2Sketch):
     """ROS2 Node that controls the Robot via the Teensy and tamproxy"""
-
-    # Encoder clamp constant
-    CLAMP = 10**7
-
-    # PID constants
-    KP = 0.00001
-
+    
     # Pin mappings
     LMOTOR_PINS = (4,5)  # DIR, PWM
     RMOTOR_PINS = (2,3)  # DIR, PWM
@@ -84,49 +78,9 @@ class RobotNode(ROS2Sketch):
 
     def drive_callback(self, msg):
         """Processes a new drive command and controls motors appropriately"""
-
-        # DEPRECATED AS OF 1/11/24 :)
-
-        # # Get time
-        # dt = self.timer.millis()
-        # self.timer.reset()
-
-        # # Store encoder values
-        # cur_lencoder = self.lencoder.val
-        # cur_rencoder = self.rencoder.val
-
-        # # Calculate error
-        # dlencoder = (cur_lencoder - self.prev_lencoder) * dt
-        # drencoder = (cur_rencoder - self.prev_rencoder) * dt
-        # error = (abs(dlencoder) - abs(drencoder)) * self.KP
-        # if abs(error) > 1: error = 0
-
-        # # Calculate adjusted left and right speeds
-        # l_speed = msg.l_speed - error
-        # r_speed = msg.r_speed + error
-        # """
-        # if isclose(msg.l_speed, 0.5) and isclose(msg.r_speed, 0.5):
-        #     print("Straight")
-        # elif isclose(l_speed, -0.5) and isclose(msg.r_speed, -0.5):
-        #     print("Reverse")
-        # elif isclose(msg.l_speed, 0.5) and isclose(msg.r_speed, -0.5):
-        #     print("Right")
-        # elif isclose(msg.l_speed, -0.5) and isclose(msg.r_speed, 0.5):
-        #     print("Left")
-        # else:
-        #     print("Stop")
-        # print(error)
-        # """
-
-        # print(l_speed)
-
         # Write to the motors
         self.lmotor.write(*self.speed_to_dir_pwm(-msg.l_speed))
         self.rmotor.write(*self.speed_to_dir_pwm(msg.r_speed))
-
-        # Store previous encoder values
-        # self.prev_lencoder = fmod(cur_lencoder, self.CLAMP)
-        # self.prev_rencoder = fmod(cur_rencoder, self.CLAMP)
 
 def main():
     rclpy.init()

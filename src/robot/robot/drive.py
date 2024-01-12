@@ -31,6 +31,10 @@ class DriverNode(Node):
     # Rate to check for keypresses and send commands
     RATE = 10   
 
+    # Physical constants
+    WHEEL_RADIUS = 1.9375 # inches
+    BASE_WIDTH = 8.4375 # inches
+
     def __init__(self):
         super().__init__('driver')
 
@@ -43,8 +47,13 @@ class DriverNode(Node):
         #subscribe to encoders
         self.encoder_sub = self.create_subscription(Encoders, 'encoders', self.drive_callback, 10)
 
-        #subscribe to vision outputs
-        self.angle_sub = self.create_subscription(Angle, 'angle', self.angle_callback, 10)
+        # Subscribe to camera for angle data
+        self.cam_angle_sub = self.create_subscription(
+            Angle,
+            'angle',
+            self.calc_desired_angle,
+            10
+        )
 
         #store prev encoders
         self.prev_lencoder = 0
@@ -53,63 +62,76 @@ class DriverNode(Node):
         #create timer
         self.timer = Timer()
 
-        #initialize angle
-        self.angle = 0
+        # Initialze wheel setpoints
+        self.desired_angle = 0
+    
+    def calc_angular_velocity_setpoint(self, desired_velocity, desired_angle):
+        """
+        Calculates the desired angular velcoity for both motors given a forward speed and angle
+        Returns: left_setpoint, right_setpoint
+        """
+        left_setpoint = (1 / self.WHEEL_RADIUS) * (desired_velocity - (self.BASE_WIDTH * desired_angle) / 2)
+        right_setpoint = (1 / self.WHEEL_RADIUS) * (desired_velocity + (self.BASE_WIDTH * desired_angle) / 2)
+        return left_setpoint, right_setpoint
+    
+    def calc_desired_angle(self, msg):
+        """
+        Calculates the new desired angle given camera data
+        + is left, - is right
+        """
+        self.desired_angle = -(msg.angle * self.KP_TURN)
 
     def drive_callback(self, msg):
-        drive_cmd_msg = DriveCmd()
-        #if nan then just turn until finds a block
-        if self.angle == float('nan'):
-            drive_cmd_msg.l_speed = TURN_SPEED
-            drive_cmd_msg.r_speed = -TURN_SPEED
-            self.drive_command_publisher.publish(drive_cmd_msg) 
-        else:
-            angle_error = self.angle * self.KP_TURN
-            l_speed = 0
-            r_speed = 0
-            l_speed += angle_error
-            r_speed -= angle_error
-            drive_cmd_msg.l_speed = l_speed
-            drive_cmd_msg.r_speed = r_speed
-            self.drive_command_publisher.publish(drive_cmd_msg) 
 
-            # #constant speed
-            # drive_speed = (0,0)
-            # #store speed in variables
-            # l_speed = drive_speed[0]
-            # r_speed = drive_speed[1]
+        # Set desired speed based on if block is visible
+        desired_speed = 0.5 if self.desired_angle == float('nan') else 0
 
-            # #get dt with timer
-            # dt = self.timer.millis()
-            # self.timer.reset()
-
-            # cur_lencoder = msg.lencoder
-            # cur_rencoder = msg.rencoder
-
-            # #math math math
-            # dlencoder = (cur_lencoder - self.prev_lencoder) * dt
-            # drencoder = (cur_rencoder - self.prev_rencoder) * dt
-            # error = (abs(dlencoder) - abs(drencoder)) * self.KP_DRIVE
-            # if abs(error) > 1: error = 0
-
-            # #calculate adjusted speeds
-            # l_speed = l_speed - error
-            # r_speed = r_speed + error
-
-            # #save previous encoder values
-            # self.prev_lencoder = fmod(cur_lencoder, self.CLAMP)
-            # self.prev_rencoder = fmod(cur_rencoder, self.CLAMP)
-
-            # #publish speeds to tell motors in robot.py
-            # drive_cmd_msg.l_speed = float(l_speed)
-            # drive_cmd_msg.r_speed = float(r_speed)
-            # self.drive_command_publisher.publish(drive_cmd_msg) 
-    
-    def angle_callback(self, msg):
-        self.angle = msg.angle
-
-
+        # Get time
+        dt = self.timer.millis()
+        self.timer.reset()     
         
+        # Store encoder values
+        cur_lencoder = msg.lencoder
+        cur_rencoder = msg.rencoder
+        
+        # Get angular velocity setpoints
+        lsetpoint, rsetpoint = self.calc_angular_velocity_setpoint(desired_speed, self.desired_angle)
+
+        # Calculate error
+        wlencoder = (cur_lencoder - self.prev_lencoder) * dt
+        wrencoder = (cur_rencoder - self.prev_rencoder) * dt
+        lerror = (lsetpoint - wlencoder) * self.KP_DRIVE
+        rerror = (rsetpoint - wrencoder) * self.KP_DRIVE
+        #if abs(lerror) > 1: lerror = 0 # not sure about this line, trying to remove spikes w/o derivative
+
+        # Calculate adjusted left and right speeds
+        l_speed = msg.l_speed + lerror
+        r_speed = msg.r_speed + rerror
+        
+        # """
+        # if isclose(msg.l_speed, 0.5) and isclose(msg.r_speed, 0.5):
+        #     print("Straight")
+        # elif isclose(l_speed, -0.5) and isclose(msg.r_speed, -0.5):
+        #     print("Reverse")
+        # elif isclose(msg.l_speed, 0.5) and isclose(msg.r_speed, -0.5):
+        #     print("Right")
+        # elif isclose(msg.l_speed, -0.5) and isclose(msg.r_speed, 0.5):
+        #     print("Left")
+        # else:
+        #     print("Stop")
+        # print(error)
+        # """
+
+        # print(l_speed)
+
+        # Write to the motors
+        self.lmotor.write(*self.speed_to_dir_pwm(-l_speed))
+        self.rmotor.write(*self.speed_to_dir_pwm(r_speed))
+
+        # Store previous encoder values
+        self.prev_lencoder = fmod(cur_lencoder, self.CLAMP)
+        self.prev_rencoder = fmod(cur_rencoder, self.CLAMP)
+
 def main():
     rclpy.init()
     # Create an instance of DriverNode
