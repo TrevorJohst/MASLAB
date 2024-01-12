@@ -60,8 +60,8 @@ class DriverNode(Node):
         drive_cmd_msg = DriveCmd()
         #if nan then just turn until finds a block
         if self.angle == float('nan'):
-            drive_cmd_msg.lspeed = TURN_SPEED
-            drive_cmd_msg.rspeed = -TURN_SPEED
+            drive_cmd_msg.l_speed = TURN_SPEED
+            drive_cmd_msg.r_speed = -TURN_SPEED
             self.drive_command_publisher.publish(drive_cmd_msg) 
         else:
             angle_error = self.angle * self.KP_TURN
@@ -69,8 +69,8 @@ class DriverNode(Node):
             r_speed = 0
             l_speed += angle_error
             r_speed -= angle_error
-            drive_cmd_msg.lspeed = l_speed
-            drive_cmd_msg.rspeed = r_speed
+            drive_cmd_msg.l_speed = l_speed
+            drive_cmd_msg.r_speed = r_speed
             self.drive_command_publisher.publish(drive_cmd_msg) 
 
             # #constant speed

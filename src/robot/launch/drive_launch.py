@@ -12,6 +12,11 @@ def generate_launch_description():
             package='robot',
             executable='drive',
             output='screen'
+        ),
+        Node(
+           package='robot',
+           executable='vision',
+           output='screen'
         )
     ])
 
