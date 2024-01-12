@@ -22,6 +22,7 @@ class VisionNode(Node):
     # Min and max HSV thresholds for green
     GREEN_THRESHOLD = ([25,45,30], [85,255,255])
     RED_THRESHOLD = ([0,160,140], [10,255,255])
+    BLUE_THRESHOLD = ([100,150,80], [125,255,255])
 
     def __init__(self, color):
         super().__init__('vision_node')
@@ -51,12 +52,18 @@ class VisionNode(Node):
         # Set lower and upper bounds for our team's color
         lower_bound = np.array(self.thresh[0])
         upper_bound = np.array(self.thresh[1])  
-        
-        # Create a mask of our frame using our color threshold
-        mask = cv2.inRange(hsv, lower_bound, upper_bound)
 
-        # Find contours from our mask 
+        # Set lower and upper bounds for the wall markers
+        lower_blue = np.array(self.BLUE_THRESHOLD[0])
+        upper_blue = np.array(self.BLUE_THRESHOLD[1])
+        
+        # Create a mask of our frame using our color thresholds
+        mask = cv2.inRange(hsv, lower_bound, upper_bound)
+        blue_mask = cv2.inRange(hsv, lower_blue, upper_blue)
+
+        # Find contours from our masks
         contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE) 
+        blue_contours, _ = cv2.findContours(blue_mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         
         # If we have contours
         if len(contours) != 0:
@@ -65,19 +72,32 @@ class VisionNode(Node):
             c = max(contours, key = cv2.contourArea)
 
             # Get a bounding rectangle around that contour
-            x, _, w, _ = cv2.boundingRect(c)
+            x, y, w, _ = cv2.boundingRect(c)
+                    
+            y_blue = None
+
+            # If we have blue contours...
+            if len(blue_contours) != 0:
+                # Find the biggest countour by area
+                c_blue = max(blue_contours, key = cv2.contourArea)
+
+                # Get a bounding rectangle around that contour
+                _,y_blue,_,h_blue = cv2.boundingRect(c_blue)
             
-            # Find center of bounding rectangle
-            center = x + w/2
-            angle = center - 160
+            if y_blue is None or (y_blue + h_blue) < y:             
+                # Find center of bounding rectangle
+                center = x + w/2
+                angle = center - 160
+            else:
+                angle = np.nan
         else:
-            angle = float('nan')
+            angle = np.nan
 
         # Create the angle message
         angle_msg = Angle()
         angle_msg.angle = angle
         self.angle_publisher_.publish(angle_msg)
-        self.get_logger().info("Angle: " + str(angle_msg.angle))
+        #self.get_logger().info("Angle: " + str(angle_msg.angle))
           
 
 def main():

@@ -3,6 +3,7 @@
 
 from robot_interface.msg import DriveCmd, Encoders, Angle
 from math import fmod
+import numpy as np
 import rclpy
 from rclpy.node import Node
 from tamproxy import Timer
@@ -25,8 +26,8 @@ class DriverNode(Node):
     CLAMP = 10**7
 
     # PID constants
-    KP_DRIVE = 0.00001
-    KP_TURN = 0.002
+    KP_DRIVE = 0.0000001
+    KP_TURN = 0.05
 
     # Rate to check for keypresses and send commands
     RATE = 10   
@@ -34,6 +35,7 @@ class DriverNode(Node):
     # Physical constants
     WHEEL_RADIUS = 1.9375 # inches
     BASE_WIDTH = 8.4375 # inches
+    TURN_ANGLE = 1000
 
     def __init__(self):
         super().__init__('driver')
@@ -64,6 +66,7 @@ class DriverNode(Node):
 
         # Initialze wheel setpoints
         self.desired_angle = 0
+        self.block_detected = False
     
     def calc_angular_velocity_setpoint(self, desired_velocity, desired_angle):
         """
@@ -79,58 +82,57 @@ class DriverNode(Node):
         Calculates the new desired angle given camera data
         + is left, - is right
         """
-        self.desired_angle = -(msg.angle * self.KP_TURN)
+        if np.isnan(msg.angle):
+            self.desired_angle = self.TURN_ANGLE
+            self.block_detected = False
+        else:
+            self.desired_angle = -(msg.angle * self.KP_TURN)
+            self.block_detected = True
 
     def drive_callback(self, msg):
-
-        # Set desired speed based on if block is visible
-        desired_speed = 0.5 if self.desired_angle == float('nan') else 0
-
         # Get time
         dt = self.timer.millis()
-        self.timer.reset()     
-        
-        # Store encoder values
-        cur_lencoder = msg.lencoder
-        cur_rencoder = msg.rencoder
-        
-        # Get angular velocity setpoints
-        lsetpoint, rsetpoint = self.calc_angular_velocity_setpoint(desired_speed, self.desired_angle)
+        self.timer.reset()    
 
-        # Calculate error
-        wlencoder = (cur_lencoder - self.prev_lencoder) * dt
-        wrencoder = (cur_rencoder - self.prev_rencoder) * dt
-        lerror = (lsetpoint - wlencoder) * self.KP_DRIVE
-        rerror = (rsetpoint - wrencoder) * self.KP_DRIVE
-        #if abs(lerror) > 1: lerror = 0 # not sure about this line, trying to remove spikes w/o derivative
+        # Only run loop if at least 10 milliseconds have passed
+        if dt >= 10:
+                
+            # Store encoder values
+            cur_lencoder = msg.lencoder
+            cur_rencoder = msg.rencoder
 
-        # Calculate adjusted left and right speeds
-        l_speed = msg.l_speed + lerror
-        r_speed = msg.r_speed + rerror
-        
-        # """
-        # if isclose(msg.l_speed, 0.5) and isclose(msg.r_speed, 0.5):
-        #     print("Straight")
-        # elif isclose(l_speed, -0.5) and isclose(msg.r_speed, -0.5):
-        #     print("Reverse")
-        # elif isclose(msg.l_speed, 0.5) and isclose(msg.r_speed, -0.5):
-        #     print("Right")
-        # elif isclose(msg.l_speed, -0.5) and isclose(msg.r_speed, 0.5):
-        #     print("Left")
-        # else:
-        #     print("Stop")
-        # print(error)
-        # """
+            # Drive towards block if detected
+            if self.block_detected:
+                desired_speed = 0.501
+                
+                # Get angular velocity setpoints
+                lsetpoint, rsetpoint = self.calc_angular_velocity_setpoint(desired_speed, self.desired_angle)
 
-        # print(l_speed)
+                # Calculate error
+                wlencoder = (cur_lencoder - self.prev_lencoder) / dt
+                wrencoder = (cur_rencoder - self.prev_rencoder) / dt
+                lerror = (lsetpoint - wlencoder) * self.KP_DRIVE
+                rerror = (rsetpoint - wrencoder) * self.KP_DRIVE
+                #if abs(lerror) > 1: lerror = 0 # not sure about this line, trying to remove spikes w/o derivative
 
-        # Write to the motors
-        self.lmotor.write(*self.speed_to_dir_pwm(-l_speed))
-        self.rmotor.write(*self.speed_to_dir_pwm(r_speed))
+                # Calculate adjusted left and right speeds
+                l_speed = desired_speed + lerror
+                r_speed = desired_speed + rerror
 
-        # Store previous encoder values
-        self.prev_lencoder = fmod(cur_lencoder, self.CLAMP)
-        self.prev_rencoder = fmod(cur_rencoder, self.CLAMP)
+            else:
+                l_speed = 0.501
+                r_speed = -0.501
+
+            # Publish drive speeds
+            drive_cmd = DriveCmd()
+            drive_cmd.l_speed = l_speed
+            drive_cmd.r_speed = r_speed
+            self.drive_command_publisher.publish(drive_cmd)
+
+            # Store previous encoder values
+            self.prev_lencoder = fmod(cur_lencoder, self.CLAMP)
+            self.prev_rencoder = fmod(cur_rencoder, self.CLAMP)
+
 
 def main():
     rclpy.init()
