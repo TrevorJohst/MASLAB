@@ -17,6 +17,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   msg/Distance.msg
   msg/Angle.msg
   msg/Encoders.msg  
+  msg/Gyro.msg
 ) 
 
 if(BUILD_TESTING)

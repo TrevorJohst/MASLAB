@@ -1,21 +1,20 @@
 #!/usr/bin/env python3
 
 import rclpy
-from math import fmod, isclose
-from robot_interface.msg import DriveCmd, Distance, Encoders, Angle
-from tamproxy import ROS2Sketch, Timer
-from tamproxy.devices import Motor, Encoder, TimeOfFlight
+from robot_interface.msg import DriveCmd, Distance, Gyro
+from tamproxy import ROS2Sketch
+from tamproxy.devices import Motor, Imu, TimeOfFlight
 
-
+### IMU AND TOF BOTH USE SDA, TEENSY HAS 2 SETS, HOW DO I SWAP TO THE OTHER SET???
 class RobotNode(ROS2Sketch):
     """ROS2 Node that controls the Robot via the Teensy and tamproxy"""
-    
+
     # Pin mappings
     LMOTOR_PINS = (4,5)  # DIR, PWM
     RMOTOR_PINS = (2,3)  # DIR, PWM
-    LENCODER_PINS = (35,36)
-    RENCODER_PINS = (39,40)
     TOF_PIN = 33
+    # TOF ???
+    # IMU ???
 
     # Publish rate
     RATE = 100
@@ -41,11 +40,8 @@ class RobotNode(ROS2Sketch):
         self.lmotor = Motor(self.tamp, *self.LMOTOR_PINS)
         self.rmotor = Motor(self.tamp, *self.RMOTOR_PINS)
 
-        # Create the encoder objects
-        self.lencoder = Encoder(self.tamp, *self.LENCODER_PINS, continuous=True)
-        self.rencoder = Encoder(self.tamp, *self.RENCODER_PINS, continuous=True)
-        self.prev_lencoder = 0
-        self.prev_rencoder = 0
+        # Create the IMU object
+        self.imu = Imu(self.tamp)
 
         # Create TOF sensor object
         self.tof = TimeOfFlight(self.tamp, self.TOF_PIN, 1)
@@ -53,7 +49,7 @@ class RobotNode(ROS2Sketch):
 
         # Create publisher for the sensors
         self.tof_publisher_ = self.create_publisher(Distance, 'distance', 10)
-        self.enc_publisher_ = self.create_publisher(Encoders, 'encoders', 10)
+        self.imu_publisher_ = self.create_publisher(Gyro, 'gyroscope', 10)
 
     def speed_to_dir_pwm(self, speed):
         """Converts floating point speed (-1.0 to 1.0) to dir and pwm values"""
@@ -66,15 +62,12 @@ class RobotNode(ROS2Sketch):
         # Get current distance and publish it
         dist = Distance()
         dist.distance = float(self.tof.dist)
-        #self.get_logger().info('Distance: ' + str(dist.distance)) # [DEBUG ONLY]
         self.tof_publisher_.publish(dist)
 
-        # Get current encoder data
-        enc = Encoders()
-        enc.lencoder = self.lencoder.val
-        enc.rencoder = self.rencoder.val
-        #self.get_logger().info('Encoders: ' + str(enc.lencoder) + ", " + str(enc.rencoder)) # [DEBUG ONLY]
-        self.enc_publisher_.publish(enc)
+        # Get current gyro data and publish it
+        gyr = Gyro()
+        gyr.z_rate = self.imu.gz
+        self.imu_publisher_.publish(gyr)
 
     def drive_callback(self, msg):
         """Processes a new drive command and controls motors appropriately"""

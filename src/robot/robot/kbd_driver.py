@@ -1,13 +1,11 @@
-from robot_interface.msg import DriveCmd
+from robot_interface.msg import DriveCmd, Gyro
 
 import rclpy
 from rclpy.node import Node
+from tamproxy import Timer
 
 import sys
 import pygame
-
-# Rate to check for keypresses and send commands
-RATE = 10
 
 # Some constants for the GUI
 PADDING = 32
@@ -15,6 +13,7 @@ BOX_SIZE = 64
 SCREEN_SIZE = BOX_SIZE * 3 + PADDING * 2
 TURN_SPEED = 0.485
 SPEED = 0.51
+
 KEY_SPEEDS = {
     pygame.K_w: (SPEED, SPEED),
     pygame.K_a: (-TURN_SPEED, TURN_SPEED),
@@ -72,6 +71,15 @@ def calculate_drive_speed(screen, surface):
 
 
 class KeyboardDriverNode(Node):
+    # PID constants
+    KP_TURN = 0.05
+    KD_TURN = 0.0
+    KI_TURN = 0.0
+
+    # Physical constants
+    WHEEL_RADIUS = 1.9375 # inches
+    BASE_WIDTH = 8.4375 # inches
+
     def __init__(self):
         super().__init__('keyboard_driver')
         self.screen, self.surface = pygame_setup()
@@ -79,14 +87,60 @@ class KeyboardDriverNode(Node):
                 DriveCmd,
                 'drive_cmd',
                 10)
-        timer_period = 1.0 / RATE
-        self.timer = self.create_timer(timer_period, self.timer_callback)
+        
+        # Subscribe to the IMU
+        self.encoder_sub = self.create_subscription(
+            Gyro, 
+            'gyroscope', 
+            self.drive_callback, 
+            10
+        )
 
-    def timer_callback(self):                
-        drive_speed = calculate_drive_speed(self.screen, self.surface)
+        # Store values for PID
+        self.prev_error = 0
+        self.integral = 0
+
+        # Create a timer for PID
+        self.timer = Timer()
+
+        # Initialze wheel setpoints
+        self.desired_angle = 0
+        self.block_detected = False
+
+    def drive_callback(self, msg):   
+        drive_speed = calculate_drive_speed(self.screen, self.surface) 
+
+        # Get time
+        dt = self.timer.millis()
+
+        # Only run loop if at least 10 milliseconds have passed
+        if dt >= 10:
+
+            # Reset timer
+            self.timer.reset()    
+                
+            # Store gyro value
+            cur_z_rate = msg.z_rate
+
+            l_speed = drive_speed[0]
+            r_speed = drive_speed[1]
+
+            # PID error calculation
+            proportional = -cur_z_rate
+            derivative = (proportional - self.prev_error) / dt
+            self.integral += proportional * dt
+            adjustment = proportional * self.KP_TURN + derivative * self.KD_TURN + self.integral * self.KI_TURN
+
+            # Calculate adjusted left and right speeds
+            l_speed = drive_speed[0] + adjustment
+            r_speed = drive_speed[1] - adjustment
+
+            # Store previous error
+            self.prev_error = proportional
+
         drive_cmd_msg = DriveCmd()
-        drive_cmd_msg.l_speed = float(drive_speed[0])
-        drive_cmd_msg.r_speed = float(drive_speed[1])
+        drive_cmd_msg.l_speed = l_speed
+        drive_cmd_msg.r_speed = r_speed
         self.drive_command_publisher.publish(drive_cmd_msg)
 
 def main():
