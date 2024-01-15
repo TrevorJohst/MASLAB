@@ -79,8 +79,8 @@ class RobotNode(ROS2Sketch):
     def drive_callback(self, msg):
         """Processes a new drive command and controls motors appropriately"""
         # Write to the motors
-        self.get_logger().info("LSpeed: " + str(msg.l_speed))
-        self.get_logger().info("RSpeed: " + str(msg.r_speed))
+        #self.get_logger().info("LSpeed: " + str(msg.l_speed))
+        #self.get_logger().info("RSpeed: " + str(msg.r_speed))
         self.lmotor.write(*self.speed_to_dir_pwm(-msg.l_speed))
         self.rmotor.write(*self.speed_to_dir_pwm(msg.r_speed))
 
