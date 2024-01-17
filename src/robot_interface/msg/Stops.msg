@@ -1,0 +1,2 @@
+bool elevator_top
+bool elevator_bottom
