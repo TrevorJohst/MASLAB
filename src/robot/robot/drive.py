@@ -10,8 +10,8 @@ from tamproxy import Timer
 
 import sys
 
-TURN_SPEED = 0.485
-SPEED = 0.51
+TURN_SPEED = 0.445
+SPEED = 0.501
 
 # Some constants for the GUI
 SPEEDS = {
@@ -92,10 +92,12 @@ class DriverNode(Node):
     def drive_callback(self, msg):
         # Get time
         dt = self.timer.millis()
-        self.timer.reset()    
 
         # Only run loop if at least 10 milliseconds have passed
         if dt >= 10:
+
+            # Reset timer
+            self.timer.reset()    
                 
             # Store encoder values
             cur_lencoder = msg.lencoder
@@ -103,7 +105,7 @@ class DriverNode(Node):
 
             # Drive towards block if detected
             if self.block_detected:
-                desired_speed = 0.501
+                desired_speed = SPEED
                 
                 # Get angular velocity setpoints
                 lsetpoint, rsetpoint = self.calc_angular_velocity_setpoint(desired_speed, self.desired_angle)
@@ -120,8 +122,8 @@ class DriverNode(Node):
                 r_speed = desired_speed + rerror
 
             else:
-                l_speed = 0.501
-                r_speed = -0.501
+                l_speed = TURN_SPEED
+                r_speed = -TURN_SPEED
 
             # Publish drive speeds
             drive_cmd = DriveCmd()

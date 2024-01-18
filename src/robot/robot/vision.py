@@ -5,7 +5,7 @@ import numpy as np
 import rclpy
 from rclpy.node import Node
 
-from robot_interface.msg import Angle
+from robot_interface.msg import Cam
 
 class VisionNode(Node):
     """
@@ -21,14 +21,18 @@ class VisionNode(Node):
 
     # Min and max HSV thresholds for green
     GREEN_THRESHOLD = ([25,45,30], [85,255,255])
-    RED_THRESHOLD = ([0,160,140], [10,255,255])
+    RED_THRESHOLD = ([0,160,100], [10,255,255])
     BLUE_THRESHOLD = ([100,150,80], [125,255,255])
+
+    # Camera constants
+    FOCAL_LENGTH = 472.2
+    BLOCK_WIDTH = 2.375
 
     def __init__(self, color):
         super().__init__('vision_node')
 
         # Create angle publisher
-        self.angle_publisher_ = self.create_publisher(Angle, 'angle', 10)
+        self.angle_publisher_ = self.create_publisher(Cam, 'cam', 10)
 
         # Create timer object
         timer_period = 1.0 / self.RATE # convert to seconds
@@ -88,16 +92,19 @@ class VisionNode(Node):
                 # Find center of bounding rectangle
                 center = x + w/2
                 angle = center - 160
+                distance = (self.BLOCK_WIDTH * self.FOCAL_LENGTH) / w
             else:
                 angle = np.nan
+                distance = np.nan
         else:
             angle = np.nan
+            distance = np.nan
 
-        # Create the angle message
-        angle_msg = Angle()
-        angle_msg.angle = angle
-        self.angle_publisher_.publish(angle_msg)
-        #self.get_logger().info("Angle: " + str(angle_msg.angle))
+        # Create the camera message
+        cam_msg = Cam()
+        cam_msg.angle = angle
+        cam_msg.distance = distance
+        self.angle_publisher_.publish(cam_msg)
           
 
 def main():
