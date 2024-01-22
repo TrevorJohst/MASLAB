@@ -2,26 +2,21 @@
 
 import rclpy
 from math import fmod, isclose
-<<<<<<< HEAD
 from robot_interface.msg import DriveCmd, Distance, Encoders
 from tamproxy import ROS2Sketch, Timer
 from tamproxy.devices import Motor, Encoder, TimeOfFlight, FeedbackMotor
-=======
-from robot_interface.msg import DriveCmd, Distance, Encoders, Stops
-from tamproxy import ROS2Sketch, Timer
-from tamproxy.devices import Motor, Encoder, TimeOfFlight, DigitalInput
->>>>>>> 34a153050b9c175240083dd044109a6df6c2cabe
 
 
 class RobotNode(ROS2Sketch):
     """ROS2 Node that controls the Robot via the Teensy and tamproxy"""
     
     # Pin mappings
-    LMOTOR_PINS = (36,37)  # DIR, PWM
-    RMOTOR_PINS = (13,14)  # DIR, PWM
-    LINAC_PINS = (33,34) # DIR, PWM
-    LENCODER_PINS = (32,31)
-    RENCODER_PINS = (29,30)
+    LMOTOR_PINS = (16,15)  # DIR, PWMs
+    RMOTOR_PINS = (14,13)  # DIR, PWM
+    LENCODER_PINS = (31,32) # WHITE, YELLOW
+    RENCODER_PINS = (35,36) # WHITE, YELLOW
+
+    LINAC_PINS = (22,23) # DIR, PWM
     TELEVATOR_PIN = 19
     BELEVATOR_PIN = 6
     TOF_PIN = 33
@@ -49,25 +44,20 @@ class RobotNode(ROS2Sketch):
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
         # Create the motor objects
-        self.lmotor = Motor(self.tamp, *self.LMOTOR_PINS)
-        self.rmotor = Motor(self.tamp, *self.RMOTOR_PINS)
-
-        # Create the encoder objects
-        self.lencoder = Encoder(self.tamp, *self.LENCODER_PINS, continuous=True)
-        self.rencoder = Encoder(self.tamp, *self.RENCODER_PINS, continuous=True)
+        self.lmotor = FeedbackMotor(self.tamp, *self.LMOTOR_PINS, *self.LENCODER_PINS, True)
+        self.rmotor = FeedbackMotor(self.tamp, *self.RMOTOR_PINS, *self.RENCODER_PINS, True)
 
         # Create TOF sensor object
         self.tof = TimeOfFlight(self.tamp, self.TOF_PIN, 1)
         self.tof.enable()
 
         # Create endstop digital readers
-        self.elevator_top = DigitalInput(self.tamp, self.TELEVATOR_PIN)
-        self.elevator_bottom = DigitalInput(self.tamp, self.BELEVATOR_PIN)
+        # self.elevator_top = DigitalInput(self.tamp, self.TELEVATOR_PIN)
+        # self.elevator_bottom = DigitalInput(self.tamp, self.BELEVATOR_PIN)
 
         # Create publisher for the sensors
         self.tof_publisher_ = self.create_publisher(Distance, 'distance', 10)
-        self.enc_publisher_ = self.create_publisher(Encoders, 'encoders', 10)
-        self.end_publisher_ = self.create_publisher(Stops, 'end_stops', 10)
+        # self.end_publisher_ = self.create_publisher(Stops, 'end_stops', 10)
 
     def timer_callback(self):
         """Publishes the teensy sensor data"""
@@ -77,32 +67,22 @@ class RobotNode(ROS2Sketch):
         dist.distance = float(self.tof.dist)
         self.tof_publisher_.publish(dist)
 
-        # Get current encoder data
-        enc = Encoders()
-        enc.lencoder = self.lencoder.val
-        enc.rencoder = self.rencoder.val
-        self.enc_publisher_.publish(enc)
+        # # Get endstop data
+        # stop = Stops()
+        # stop.elevator_top = True if self.elevator_top.val == bytes([1]) else False
+        # stop.elevator_bottom = True if self.elevator_bottom.val == bytes([1]) else False
+        # self.end_publisher_.publish(stop)
 
-<<<<<<< HEAD
     def speed_to_dir_pwm(self, speed):
         """Converts floating point speed (-1.0 to 1.0) to dir and pwm values"""
         speed = max(min(speed, 1), -1)
         return speed > 0, int(abs(speed * 255))
-=======
-        # Get endstop data
-        stop = Stops()
-        stop.elevator_top = True if self.elevator_top.val == bytes([1]) else False
-        stop.elevator_bottom = True if self.elevator_bottom.val == bytes([1]) else False
-        self.end_publisher_.publish(stop)
->>>>>>> 34a153050b9c175240083dd044109a6df6c2cabe
 
     def drive_callback(self, msg):
         """Processes a new drive command and controls motors appropriately"""
         # Write to the motors
-        #self.get_logger().info("LSpeed: " + str(msg.l_speed))
-        #self.get_logger().info("RSpeed: " + str(msg.r_speed))
-        self.lmotor.write(*self.speed_to_dir_pwm(-msg.l_speed))
-        self.rmotor.write(*self.speed_to_dir_pwm(msg.r_speed))
+        self.lmotor.write(msg.l_speed)
+        self.rmotor.write(-msg.r_speed)
 
 def main():
     rclpy.init()

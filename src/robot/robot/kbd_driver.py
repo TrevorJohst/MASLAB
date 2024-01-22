@@ -15,8 +15,8 @@ RATE = 10
 PADDING = 32
 BOX_SIZE = 64
 SCREEN_SIZE = BOX_SIZE * 3 + PADDING * 2
-TURN_SPEED = 0.5
-SPEED = 0.5
+TURN_SPEED = 6.0
+SPEED = 6.0
 KEY_SPEEDS = {
     pygame.K_w: (SPEED, SPEED),
     pygame.K_a: (-TURN_SPEED, TURN_SPEED),
@@ -73,20 +73,7 @@ def calculate_drive_speed(screen, surface):
     return drive_speed
 
 
-class KeyboardDriverNode(Node):
-    KP_DRIVE = 0.01
-    WHEEL_RADIUS = 1.9375 # inches
-    BASE_WIDTH = 8.4375 # inches
-
-
-    GEAR_RATIO = 26.9
-    PI = 3.14159
-    ENC_COUNT = 64
-    MS_IN_S = 1000
-
-    ENC_TO_ANG_VEL = MS_IN_S * 2 * PI / ENC_COUNT / GEAR_RATIO
-
-    CLAMP = 10**7
+class KeyboardDriverNode(Node): 
 
     def __init__(self):
         super().__init__('keyboard_driver')
@@ -96,13 +83,7 @@ class KeyboardDriverNode(Node):
                 'drive_cmd',
                 10
         )
-        self.encoder_sub = self.create_subscription(Encoders, 'encoders', self.encoder_callback, 10)
-        self.timer = Timer()
-
-        # Store prev encoders
-        self.prev_lencoder = 0
-        self.prev_rencoder = 0
-        self.prev_speeds = 0, 0
+        self.timer = self.create_timer(1/100, self.timer_callback)
 
 
     def calc_angular_velocity_setpoint(self, desired_left, desired_right, desired_angle):
@@ -114,62 +95,13 @@ class KeyboardDriverNode(Node):
         right_setpoint = (1 / self.WHEEL_RADIUS) * (desired_right + (self.BASE_WIDTH * desired_angle) / 2)
         return left_setpoint, right_setpoint
     
-    def encoder_callback(self, msg):     
+    def timer_callback(self):     
 
         drive_speed = calculate_drive_speed(self.screen, self.surface)
-
-        ### DRIVE SPEED PID
-        # Get time
-        dt = self.timer.millis()
-
-        # Only run loop if at least 5 milliseconds have passed
-        if dt >= 5:
-            self.timer.reset()    
-                
-            # Store encoder values
-            cur_lencoder = msg.lencoder
-            cur_rencoder = msg.rencoder
-
-            l_speed = drive_speed[0]
-            r_speed = drive_speed[1]
-                
-            # Get angular velocity setpoints
-            lsetpoint, rsetpoint = self.calc_angular_velocity_setpoint(l_speed, r_speed, 0)
-
-            # Calculate error
-            wlencoder = (cur_lencoder - self.prev_lencoder) / dt * self.ENC_TO_ANG_VEL
-            wrencoder = (cur_rencoder - self.prev_rencoder) / dt * self.ENC_TO_ANG_VEL
-            self.get_logger().info("Left Desired: " + str(lsetpoint))
-            self.get_logger().info("Left Calculated: " + str(wlencoder))
-            lerror = (wlencoder - lsetpoint) * self.KP_DRIVE
-            rerror = (wrencoder - rsetpoint) * self.KP_DRIVE
-            #if abs(lerror) > 1: lerror = 0 # not sure about this line, trying to remove spikes w/o derivative
-
-            # Calculate adjusted left and right speeds
-            l_speed = l_speed + lerror
-            r_speed = r_speed + rerror
-            self.get_logger().info("Left Commanded: " + str(l_speed))
-
-            # Publish drive speeds
-            drive_cmd = DriveCmd()
-            drive_cmd.l_speed = l_speed
-            drive_cmd.r_speed = r_speed
-            self.drive_command_publisher.publish(drive_cmd)
-
-            # Store previous encoder values
-            self.prev_lencoder = fmod(cur_lencoder, self.CLAMP)
-            self.prev_rencoder = fmod(cur_rencoder, self.CLAMP)
-
-            self.prev_speeds = l_speed, r_speed
-        else:
-            l_speed = self.prev_speeds[0]
-            r_speed = self.prev_speeds[1]
-                
-        ### DRIVE SPEED PID
             
         drive_cmd_msg = DriveCmd()
-        drive_cmd_msg.l_speed = float(l_speed)
-        drive_cmd_msg.r_speed = float(r_speed)
+        drive_cmd_msg.l_speed = float(drive_speed[0])
+        drive_cmd_msg.r_speed = float(drive_speed[1])
         self.drive_command_publisher.publish(drive_cmd_msg)
 
 def main():
