@@ -2,19 +2,22 @@
 
 import rclpy
 from math import fmod, isclose
-from robot_interface.msg import DriveCmd, Distance, Encoders, Angle
+from robot_interface.msg import DriveCmd, Distance, Encoders
 from tamproxy import ROS2Sketch, Timer
-from tamproxy.devices import Motor, Encoder, TimeOfFlight
+from tamproxy.devices import Motor, Encoder, TimeOfFlight, FeedbackMotor
 
 
 class RobotNode(ROS2Sketch):
     """ROS2 Node that controls the Robot via the Teensy and tamproxy"""
     
     # Pin mappings
-    LMOTOR_PINS = (4,5)  # DIR, PWM
-    RMOTOR_PINS = (2,3)  # DIR, PWM
-    LENCODER_PINS = (35,36)
-    RENCODER_PINS = (39,40)
+    LMOTOR_PINS = (36,37)  # DIR, PWM
+    RMOTOR_PINS = (13,14)  # DIR, PWM
+    LINAC_PINS = (33,34) # DIR, PWM
+    LENCODER_PINS = (32,31)
+    RENCODER_PINS = (29,30)
+    TELEVATOR_PIN = 19
+    BELEVATOR_PIN = 6
     TOF_PIN = 33
 
     # Publish rate
@@ -44,8 +47,6 @@ class RobotNode(ROS2Sketch):
         # Create the encoder objects
         self.lencoder = Encoder(self.tamp, *self.LENCODER_PINS, continuous=True)
         self.rencoder = Encoder(self.tamp, *self.RENCODER_PINS, continuous=True)
-        self.prev_lencoder = 0
-        self.prev_rencoder = 0
 
         # Create TOF sensor object
         self.tof = TimeOfFlight(self.tamp, self.TOF_PIN, 1)
@@ -55,26 +56,24 @@ class RobotNode(ROS2Sketch):
         self.tof_publisher_ = self.create_publisher(Distance, 'distance', 10)
         self.enc_publisher_ = self.create_publisher(Encoders, 'encoders', 10)
 
-    def speed_to_dir_pwm(self, speed):
-        """Converts floating point speed (-1.0 to 1.0) to dir and pwm values"""
-        speed = max(min(speed, 1), -1)
-        return speed > 0, int(abs(speed * 255))
-
     def timer_callback(self):
         """Publishes the teensy sensor data"""
 
         # Get current distance and publish it
         dist = Distance()
         dist.distance = float(self.tof.dist)
-        #self.get_logger().info('Distance: ' + str(dist.distance)) # [DEBUG ONLY]
         self.tof_publisher_.publish(dist)
 
         # Get current encoder data
         enc = Encoders()
         enc.lencoder = self.lencoder.val
         enc.rencoder = self.rencoder.val
-        #self.get_logger().info('Encoders: ' + str(enc.lencoder) + ", " + str(enc.rencoder)) # [DEBUG ONLY]
         self.enc_publisher_.publish(enc)
+
+    def speed_to_dir_pwm(self, speed):
+        """Converts floating point speed (-1.0 to 1.0) to dir and pwm values"""
+        speed = max(min(speed, 1), -1)
+        return speed > 0, int(abs(speed * 255))
 
     def drive_callback(self, msg):
         """Processes a new drive command and controls motors appropriately"""
