@@ -2,9 +2,15 @@
 
 import rclpy
 from math import fmod, isclose
+<<<<<<< HEAD
 from robot_interface.msg import DriveCmd, Distance, Encoders
 from tamproxy import ROS2Sketch, Timer
 from tamproxy.devices import Motor, Encoder, TimeOfFlight, FeedbackMotor
+=======
+from robot_interface.msg import DriveCmd, Distance, Encoders, Stops
+from tamproxy import ROS2Sketch, Timer
+from tamproxy.devices import Motor, Encoder, TimeOfFlight, DigitalInput
+>>>>>>> 34a153050b9c175240083dd044109a6df6c2cabe
 
 
 class RobotNode(ROS2Sketch):
@@ -19,6 +25,8 @@ class RobotNode(ROS2Sketch):
     TELEVATOR_PIN = 19
     BELEVATOR_PIN = 6
     TOF_PIN = 33
+    TELEVATOR_PIN = 19
+    BELEVATOR_PIN = 6
 
     # Publish rate
     RATE = 100
@@ -52,9 +60,14 @@ class RobotNode(ROS2Sketch):
         self.tof = TimeOfFlight(self.tamp, self.TOF_PIN, 1)
         self.tof.enable()
 
+        # Create endstop digital readers
+        self.elevator_top = DigitalInput(self.tamp, self.TELEVATOR_PIN)
+        self.elevator_bottom = DigitalInput(self.tamp, self.BELEVATOR_PIN)
+
         # Create publisher for the sensors
         self.tof_publisher_ = self.create_publisher(Distance, 'distance', 10)
         self.enc_publisher_ = self.create_publisher(Encoders, 'encoders', 10)
+        self.end_publisher_ = self.create_publisher(Stops, 'end_stops', 10)
 
     def timer_callback(self):
         """Publishes the teensy sensor data"""
@@ -70,10 +83,18 @@ class RobotNode(ROS2Sketch):
         enc.rencoder = self.rencoder.val
         self.enc_publisher_.publish(enc)
 
+<<<<<<< HEAD
     def speed_to_dir_pwm(self, speed):
         """Converts floating point speed (-1.0 to 1.0) to dir and pwm values"""
         speed = max(min(speed, 1), -1)
         return speed > 0, int(abs(speed * 255))
+=======
+        # Get endstop data
+        stop = Stops()
+        stop.elevator_top = True if self.elevator_top.val == bytes([1]) else False
+        stop.elevator_bottom = True if self.elevator_bottom.val == bytes([1]) else False
+        self.end_publisher_.publish(stop)
+>>>>>>> 34a153050b9c175240083dd044109a6df6c2cabe
 
     def drive_callback(self, msg):
         """Processes a new drive command and controls motors appropriately"""
