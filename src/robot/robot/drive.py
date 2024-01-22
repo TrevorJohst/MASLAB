@@ -1,7 +1,7 @@
 
 #!/usr/bin/env python3
 
-from robot_interface.msg import DriveCmd, Encoders, Angle
+from robot_interface.msg import DriveCmd, Encoders, Cam
 from math import fmod
 import numpy as np
 import rclpy
@@ -47,12 +47,17 @@ class DriverNode(Node):
                 10)
         
         #subscribe to encoders
-        self.encoder_sub = self.create_subscription(Encoders, 'encoders', self.drive_callback, 10)
+        self.encoder_sub = self.create_subscription(
+            Encoders, 
+            'encoders', 
+            self.drive_callback, 
+            10
+        )
 
         # Subscribe to camera for angle data
         self.cam_angle_sub = self.create_subscription(
-            Angle,
-            'angle',
+            Cam,
+            'camera',
             self.calc_desired_angle,
             10
         )
