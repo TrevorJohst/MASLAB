@@ -18,6 +18,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   msg/Encoders.msg  
   msg/Cam.msg
   msg/Stops.msg
+  msg/LinCmd.msg
 ) 
 
 if(BUILD_TESTING)

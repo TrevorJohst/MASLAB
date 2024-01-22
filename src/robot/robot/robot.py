@@ -2,20 +2,20 @@
 
 import rclpy
 from math import fmod, isclose
-from robot_interface.msg import DriveCmd, Distance, Encoders, Stops
+from robot_interface.msg import DriveCmd, LinCmd, Distance, Encoders, Stops
 from tamproxy import ROS2Sketch, Timer
-from tamproxy.devices import Motor, Encoder, TimeOfFlight, DigitalInput
+from tamproxy.devices import Motor, Encoder, DigitalInput
 
 
 class RobotNode(ROS2Sketch):
     """ROS2 Node that controls the Robot via the Teensy and tamproxy"""
     
     # Pin mappings
-    LMOTOR_PINS = (4,5)  # DIR, PWM
-    RMOTOR_PINS = (2,3)  # DIR, PWM
-    LENCODER_PINS = (35,36)
-    RENCODER_PINS = (39,40)
-    TOF_PIN = 33
+    LMOTOR_PINS = (41,40)  # DIR, PWM
+    RMOTOR_PINS = (13,14)  # DIR, PWM
+    LINAC_PINS = (33,34) # DIR, PWM
+    LENCODER_PINS = (31,32)
+    RENCODER_PINS = (29,30)
     TELEVATOR_PIN = 19
     BELEVATOR_PIN = 6
 
@@ -32,8 +32,17 @@ class RobotNode(ROS2Sketch):
             DriveCmd,
             'drive_cmd',
             self.drive_callback,
-            10)
+            10
+        )
         self.drive_sub  # prevent unused variable warning
+
+        # Create a subscriber to listen for linear actuator commands
+        self.lin_sub = self.create_subscription(
+            LinCmd,
+            'lin_cmd',
+            self.lin_callback,
+            10
+        )
 
         # Create timer object
         timer_period = 1.0 / self.RATE # convert rate to seconds
@@ -42,16 +51,13 @@ class RobotNode(ROS2Sketch):
         # Create the motor objects
         self.lmotor = Motor(self.tamp, *self.LMOTOR_PINS)
         self.rmotor = Motor(self.tamp, *self.RMOTOR_PINS)
+        self.linac = Motor(self.tamp, *self.LINAC_PINS)
 
         # Create the encoder objects
         self.lencoder = Encoder(self.tamp, *self.LENCODER_PINS, continuous=True)
         self.rencoder = Encoder(self.tamp, *self.RENCODER_PINS, continuous=True)
         self.prev_lencoder = 0
         self.prev_rencoder = 0
-
-        # Create TOF sensor object
-        self.tof = TimeOfFlight(self.tamp, self.TOF_PIN, 1)
-        self.tof.enable()
 
         # Create endstop digital readers
         self.elevator_top = DigitalInput(self.tamp, self.TELEVATOR_PIN)
@@ -94,6 +100,13 @@ class RobotNode(ROS2Sketch):
         #self.get_logger().info("RSpeed: " + str(msg.r_speed))
         self.lmotor.write(*self.speed_to_dir_pwm(-msg.l_speed))
         self.rmotor.write(*self.speed_to_dir_pwm(msg.r_speed))
+
+    def lin_callback(self, msg):
+        # Extend or retract based on message bool
+        if msg.extended:
+            self.linac.write(*self.speed_to_dir_pwm(1.0))
+        else:
+            self.linac.write(*self.speed_to_dir_pwm(-1.0))
 
 def main():
     rclpy.init()
