@@ -20,6 +20,8 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   msg/Gyro.msg
   msg/Stops.msg
   msg/LinCmd.msg
+  msg/Break.msg
+  msg/Image.msg
 ) 
 
 if(BUILD_TESTING)

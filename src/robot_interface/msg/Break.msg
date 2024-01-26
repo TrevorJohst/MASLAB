@@ -1,2 +1,2 @@
-bool beamBroken
+bool beam_broken
 

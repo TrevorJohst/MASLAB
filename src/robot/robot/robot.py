@@ -2,7 +2,7 @@
 
 import rclpy
 from math import fmod, isclose
-from robot_interface.msg import DriveCmd, LinCmd, Distance, Stops
+from robot_interface.msg import DriveCmd, LinCmd, Distance, Stops, Break
 from tamproxy import ROS2Sketch, Timer
 from tamproxy.devices import Motor, FeedbackMotor, DigitalInput
 
@@ -17,7 +17,7 @@ class RobotNode(ROS2Sketch):
     RENCODER_PINS = (35,36) # WHITE, YELLOW
 
     LINAC_PINS = (22,23) # DIR, PWM
-    TELEVATOR_PIN = 19
+    TELEVATOR_PIN = 4
     BELEVATOR_PIN = 6
 
     BEAM_PIN = 3
@@ -57,29 +57,29 @@ class RobotNode(ROS2Sketch):
 
         # Create endstop digital readers
         # self.elevator_top = DigitalInput(self.tamp, self.TELEVATOR_PIN)
-        # self.elevator_bottom = DigitalInput(self.tamp, self.BELEVATOR_PIN)
+        self.elevator_bottom = DigitalInput(self.tamp, self.BELEVATOR_PIN)
 	
-	#Create breakbeam digital reader
-	# self.beamBroken = DigitalInput(self.tamp, self.BEAM_PIN)
+        #Create breakbeam digital reader
+        # self.beamBroken = DigitalInput(self.tamp, self.BEAM_PIN)
 
         # Create publisher for the sensors
-        self.tof_publisher_ = self.create_publisher(Distance, 'distance', 10)
-        # self.end_publisher_ = self.create_publisher(Stops, 'end_stops', 10)
-	# self.beam_publisher_ = self.create_publisher(Break, 'beam', 10)
+        # self.tof_publisher_ = self.create_publisher(Distance, 'distance', 10)
+        self.end_publisher_ = self.create_publisher(Stops, 'end_stops', 10)
+        # self.beam_publisher_ = self.create_publisher(Break, 'beam', 10)
 
     def timer_callback(self):
         """Publishes the teensy sensor data"""
 
-        # # Get endstop data
-        # stop = Stops()
-        # stop.elevator_top = True if self.elevator_top.val == bytes([1]) else False
-        # stop.elevator_bottom = True if self.elevator_bottom.val == bytes([1]) else False
-	# self.end_publisher_.publish(stop)
+        # Get endstop data
+        stop = Stops()
+        stop.elevator_top = True #if self.elevator_top.val == bytes([1]) else False
+        stop.elevator_bottom = True if self.elevator_bottom.val == bytes([1]) else False
+        self.end_publisher_.publish(stop)
 
-	# Get breakbeam data
-	#beam =  Break()
-	#beam.BeamBroken = True if self.beamBroken.val == bytes([1]) else False
-	#self.beam_publisher_.publish(beam)
+        # Get breakbeam data
+        #beam =  Break()
+        #beam.BeamBroken = True if self.beamBroken.val == bytes([1]) else False
+        #self.beam_publisher_.publish(beam)
 	
 
     def speed_to_dir_pwm(self, speed):
