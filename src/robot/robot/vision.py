@@ -7,6 +7,7 @@ from rclpy.node import Node
 from cv_bridge import CvBridge, CvBridgeError
 from robot_interface.msg import Cam
 from sensor_msgs.msg import Image
+import math
 
 class VisionNode(Node):
     """
@@ -92,7 +93,7 @@ class VisionNode(Node):
         #_, frame = self.cap.read()
         frame = self.bridge.imgmsg_to_cv2(msg, "bgr8")
         frame = cv2.resize(frame, (320, 240)) # resize to decrease processing
-
+        frame = cv2.rotate(frame, cv2.ROTATE_180) #rotate since camera is upside down 
         # Convert BGR to HSV
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)  
         
@@ -141,9 +142,12 @@ class VisionNode(Node):
                 # Find center of bounding rectangle
                 center_x = x + w/2
                 center_y = y + h
-                world_x, world_y = self.transformUvToXy(self.homog, center_x, center_y)
-                distance = world_x
-                angle = world_y
+                dist_front, dist_left = self.transformUvToXy(self.homog, center_x, center_y)
+                #pythagorem distance
+                distance = math.sqrt((dist_front**2)+(dist_left**2))
+                angle = math.atan(dist_left/distance)
+                #convert to degrees
+                angle = angle*(180/math.pi) #positive for left and negative to right
 
         # Create the camera messages
         cam_msg = Cam()
@@ -157,7 +161,6 @@ class VisionNode(Node):
           
 
 def main():
-
     rclpy.init()
 
     vn = VisionNode("red")

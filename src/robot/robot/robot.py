@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
 
 import rclpy
-from math import fmod, isclose
-from robot_interface.msg import DriveCmd, LinCmd, Distance, Stops, Break
+from robot_interface.msg import DriveCmd, LinCmd, ColorDetect, Stops, Break
 from tamproxy import ROS2Sketch, Timer
-from tamproxy.devices import Motor, FeedbackMotor, DigitalInput
+from tamproxy.devices import Motor, FeedbackMotor, DigitalInput, Color
 
 
 class RobotNode(ROS2Sketch):
     """ROS2 Node that controls the Robot via the Teensy and tamproxy"""
     
     # Pin mappings
-    LMOTOR_PINS = (16,15)  # DIR, PWMs
+    LMOTOR_PINS = (41,15)  # DIR, PWMs
     RMOTOR_PINS = (14,13)  # DIR, PWM
     LENCODER_PINS = (31,32) # WHITE, YELLOW
     RENCODER_PINS = (35,36) # WHITE, YELLOW
@@ -24,6 +23,10 @@ class RobotNode(ROS2Sketch):
 
     # Publish rate
     RATE = 100
+
+    # RGB thresholds
+    RED_THRESH = 0
+    GREEN_THRESH = 0
 
     def setup(self):
         """
@@ -56,16 +59,19 @@ class RobotNode(ROS2Sketch):
         self.linac = Motor(self.tamp, *self.LINAC_PINS)
 
         # Create endstop digital readers
-        # self.elevator_top = DigitalInput(self.tamp, self.TELEVATOR_PIN)
+        self.elevator_top = DigitalInput(self.tamp, self.TELEVATOR_PIN)
         self.elevator_bottom = DigitalInput(self.tamp, self.BELEVATOR_PIN)
 	
-        #Create breakbeam digital reader
-        # self.beamBroken = DigitalInput(self.tamp, self.BEAM_PIN)
+        # Create breakbeam digital reader
+        self.beamBroken = DigitalInput(self.tamp, self.BEAM_PIN)
+
+        # Create color reader
+        self.color = Color(self.tamp)
 
         # Create publisher for the sensors
-        # self.tof_publisher_ = self.create_publisher(Distance, 'distance', 10)
         self.end_publisher_ = self.create_publisher(Stops, 'end_stops', 10)
-        # self.beam_publisher_ = self.create_publisher(Break, 'beam', 10)
+        self.beam_publisher_ = self.create_publisher(Break, 'beam', 10)
+        self.color_publisher_ = self.create_publisher(ColorDetect, 'color', 10)
 
     def timer_callback(self):
         """Publishes the teensy sensor data"""
@@ -77,9 +83,19 @@ class RobotNode(ROS2Sketch):
         self.end_publisher_.publish(stop)
 
         # Get breakbeam data
-        #beam =  Break()
-        #beam.BeamBroken = True if self.beamBroken.val == bytes([1]) else False
-        #self.beam_publisher_.publish(beam)
+        beam = Break()
+        beam.BeamBroken = True if self.beamBroken.val == bytes([1]) else False
+        self.beam_publisher_.publish(beam)
+
+        # Get updated color detection
+        detect = ColorDetect()
+        if self.color.r > self.RED_THRESH:
+            detect.color = "Red"
+        elif self.color.g > self.GREEN_THRESH:
+            detect.color = "Green"
+        else:
+            detect.color = "None"
+        self.color_publisher_.publish(detect)
 	
 
     def speed_to_dir_pwm(self, speed):

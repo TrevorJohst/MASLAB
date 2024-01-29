@@ -21,7 +21,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   msg/Stops.msg
   msg/LinCmd.msg
   msg/Break.msg
-  msg/Image.msg
+  msg/ColorDetect.msg
 ) 
 
 if(BUILD_TESTING)
